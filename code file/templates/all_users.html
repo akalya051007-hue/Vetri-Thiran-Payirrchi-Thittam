@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        FitBuddy - Admin Dashboard
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<main class="page wide">
+
+
+    <div class="topbar">
+
+        <a href="/">
+            ← Home
+        </a>
+
+    </div>
+
+
+    <section class="card">
+
+
+        <div class="badge">
+            ADMIN DASHBOARD
+        </div>
+
+
+        <h1>
+            All Users
+        </h1>
+
+
+        {% if not users %}
+
+        <p>
+            No users found.
+        </p>
+
+        {% endif %}
+
+
+        {% for user in users %}
+
+
+        <article class="admin-item">
+
+
+            <div class="admin-head">
+
+
+                <div>
+
+                    <h2>
+                        {{ user.username }}
+                    </h2>
+
+
+                    <p>
+
+                        User ID:
+                        {{ user.user_id }}
+
+                        <br>
+
+                        Goal:
+                        {{ user.goal }}
+
+                        <br>
+
+                        Intensity:
+                        {{ user.intensity }}
+
+                    </p>
+
+                </div>
+
+
+                <form
+                    method="post"
+                    action="/delete-user"
+                    onsubmit="return confirm('Delete this user?')"
+                >
+
+
+                    <input
+                        type="hidden"
+                        name="user_id"
+                        value="{{ user.user_id }}"
+                    >
+
+
+                    <input
+                        type="hidden"
+                        name="key"
+                        value="{{ request.query_params.get('key') }}"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="danger"
+                    >
+
+                        Delete
+
+                    </button>
+
+
+                </form>
+
+
+            </div>
+
+
+            <details>
+
+                <summary>
+                    Original Workout Plan
+                </summary>
+
+
+                <pre class="plan">{{ user.original_plan }}</pre>
+
+            </details>
+
+
+            {% if user.updated_plan %}
+
+            <details open>
+
+                <summary>
+                    Updated Workout Plan
+                </summary>
+
+
+                <pre class="plan">{{ user.updated_plan }}</pre>
+
+            </details>
+
+            {% endif %}
+
+
+            {% if user.feedback %}
+
+            <p>
+
+                <strong>
+                    User Feedback:
+                </strong>
+
+                {{ user.feedback }}
+
+            </p>
+
+            {% endif %}
+
+
+        </article>
+
+
+        {% endfor %}
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>

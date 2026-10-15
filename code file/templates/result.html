@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        FitBuddy - Your Plan
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<main class="page">
+
+
+    <div class="topbar">
+
+        <a href="/">
+            ← Create New Plan
+        </a>
+
+    </div>
+
+
+    {% if message %}
+
+    <div class="alert success">
+
+        {{ message }}
+
+    </div>
+
+    {% endif %}
+
+
+    {% if error %}
+
+    <div class="alert error">
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+
+    {% if user %}
+
+
+    <section class="card">
+
+
+        <div class="badge">
+            PERSONALIZED FITNESS PLAN
+        </div>
+
+
+        <h1>
+            Hello, {{ user.username }} 👋
+        </h1>
+
+
+        <div class="profile">
+
+
+            <span>
+                <b>User ID:</b>
+                {{ user.user_id }}
+            </span>
+
+
+            <span>
+                <b>Age:</b>
+                {{ user.age }}
+            </span>
+
+
+            <span>
+                <b>Weight:</b>
+                {{ user.weight }} kg
+            </span>
+
+
+            <span>
+                <b>Goal:</b>
+                {{ user.goal }}
+            </span>
+
+
+            <span>
+                <b>Intensity:</b>
+                {{ user.intensity }}
+            </span>
+
+
+        </div>
+
+
+    </section>
+
+
+    <section class="card">
+
+
+        {% if user.updated_plan %}
+
+        <h2>
+            Updated 7-Day Workout Plan
+        </h2>
+
+        {% else %}
+
+        <h2>
+            7-Day Workout Plan
+        </h2>
+
+        {% endif %}
+
+
+        <pre class="plan">{{ user.updated_plan or user.original_plan }}</pre>
+
+
+    </section>
+
+
+    <section class="card tip">
+
+
+        <h2>
+            Nutrition / Recovery Tip
+        </h2>
+
+
+        <p>
+            {{ user.nutrition_tip }}
+        </p>
+
+
+    </section>
+
+
+    <section class="card">
+
+
+        <h2>
+            Improve Your Plan
+        </h2>
+
+
+        <p class="muted">
+
+            Tell FitBuddy what you want
+            to change in your plan.
+
+        </p>
+
+
+        <form
+            method="post"
+            action="/submit-feedback"
+        >
+
+
+            <input
+                type="hidden"
+                name="user_id"
+                value="{{ user.user_id }}"
+            >
+
+
+            <textarea
+                name="feedback"
+                maxlength="1000"
+                placeholder="Example: Make the workouts easier and add more stretching."
+                required
+            ></textarea>
+
+
+            <button
+                type="submit"
+            >
+
+                Update Plan with AI
+
+            </button>
+
+
+        </form>
+
+
+    </section>
+
+
+    {% endif %}
+
+
+</main>
+
+
+</body>
+
+</html>
